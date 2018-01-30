@@ -1,0 +1,328 @@
+[COMMON]
+Port            = "1080"
+
+[FS]
+Programs        = "programs"
+Videos          = "videos"
+
+[EXT_PROGRAMS]
+Recpt1          = "/usr/local/bin/recpt1"
+Epgdump         = "/usr/local/bin/epgdump"
+
+[[CHANNEL]]
+Name            = "13"
+ID              = "13"
+
+[[CHANNEL_]]
+Name            = "14"
+ID              = "14"
+
+[[CHANNEL_]]
+Name            = "15"
+ID              = "15"
+
+[[CHANNEL]]
+Name            = "16"
+ID              = "16"
+[[CHANNEL_]]
+Name            = "17"
+ID              = "17"
+[[CHANNEL]]
+Name            = "18"
+ID              = "18"
+[[CHANNEL_]]
+Name            = "19"
+ID              = "19"
+[[CHANNEL_]]
+Name            = "20"
+ID              = "20"
+[[CHANNEL]]
+Name            = "21"
+ID              = "21"
+[[CHANNEL]]
+Name            = "22"
+ID              = "22"
+[[CHANNEL]]
+Name            = "23"
+ID              = "23"
+[[CHANNEL]]
+Name            = "24"
+ID              = "24"
+[[CHANNEL]]
+Name            = "25"
+ID              = "25"
+[[CHANNEL]]
+Name            = "26"
+ID              = "26"
+[[CHANNEL]]
+Name            = "27"
+ID              = "27"
+[[CHANNEL_]]
+Name            = "28"
+ID              = "28"
+[[CHANNEL_]]
+Name            = "29"
+ID              = "29"
+[[CHANNEL_]]
+Name            = "30"
+ID              = "30"
+[[CHANNEL_]]
+Name            = "31"
+ID              = "31"
+[[CHANNEL_]]
+Name            = "32"
+ID              = "32"
+[[CHANNEL_]]
+Name            = "33"
+ID              = "33"
+[[CHANNEL_]]
+Name            = "34"
+ID              = "34"
+[[CHANNEL_]]
+Name            = "35"
+ID              = "35"
+[[CHANNEL_]]
+Name            = "36"
+ID              = "36"
+[[CHANNEL]]
+Name            = "37"
+ID              = "37"
+[[CHANNEL_]]
+Name            = "38"
+ID              = "38"
+[[CHANNEL_]]
+Name            = "39"
+ID              = "39"
+[[CHANNEL_]]
+Name            = "40"
+ID              = "40"
+[[CHANNEL_]]
+Name            = "41"
+ID              = "41"
+[[CHANNEL_]]
+Name            = "42"
+ID              = "42"
+[[CHANNEL_]]
+Name            = "43"
+ID              = "43"
+[[CHANNEL_]]
+Name            = "44"
+ID              = "44"
+[[CHANNEL_]]
+Name            = "45"
+ID              = "45"
+[[CHANNEL_]]
+Name            = "46"
+ID              = "46"
+[[CHANNEL_]]
+Name            = "47"
+ID              = "47"
+[[CHANNEL_]]
+Name            = "48"
+ID              = "48"
+[[CHANNEL_]]
+Name            = "49"
+ID              = "49"
+[[CHANNEL_]]
+Name            = "50"
+ID              = "50"
+[[CHANNEL_]]
+Name            = "51"
+ID              = "51"
+[[CHANNEL_]]
+Name            = "52"
+ID              = "52"
+[[CHANNEL_]]
+Name            = "53"
+ID              = "53"
+[[CHANNEL_]]
+Name            = "54"
+ID              = "54"
+[[CHANNEL_]]
+Name            = "55"
+ID              = "55"
+[[CHANNEL_]]
+Name            = "56"
+ID              = "56"
+[[CHANNEL_]]
+Name            = "57"
+ID              = "57"
+[[CHANNEL_]]
+Name            = "58"
+ID              = "58"
+[[CHANNEL_]]
+Name            = "59"
+ID              = "59"
+[[CHANNEL_]]
+Name            = "60"
+ID              = "60"
+[[CHANNEL_]]
+Name            = "61"
+ID              = "61"
+[[CHANNEL_]]
+Name            = "62"
+ID              = "62"
+
+[[CHANNEL]]
+Name            = "BS朝日"
+ID              = "BS01_0"
+
+
+[[CHANNEL]]
+Name            = "WOWOWプライム"
+ID              = "BS03_0"
+
+[[CHANNEL]]
+Name            = "BSジャパン"
+ID              = "BS03_1"
+
+[[CHANNEL]]
+Name            = "WOWOWライブ"
+ID              = "BS05_0"
+
+[[CHANNEL]]
+Name            = "WOWOWシネマ"
+ID              = "BS05_1"
+
+[[CHANNEL]]
+Name            = "スターチャンネル2/3"
+ID              = "BS07_0"
+
+[[CHANNEL]]
+Name            = "BSアニマックス"
+ID              = "BS07_1"
+
+[[CHANNEL]]
+Name            = "ディズニーチャンネル"
+ID              = "BS07_2"
+
+[[CHANNEL]]
+Name            = "BS11"
+ID              = "BS09_0"
+
+[[CHANNEL]]
+Name            = "スターチャンネル1"
+ID              = "BS09_1"
+
+[[CHANNEL]]
+Name            = "TwellV"
+ID              = "BS09_2"
+
+[[CHANNEL]]
+Name            = "FOX bs238"
+ID              = "BS11_0"
+
+[[CHANNEL]]
+Name            = "BSスカパー!"
+ID              = "BS11_1"
+
+[[CHANNEL]]
+Name            = "放送大学"
+ID              = "BS11_2"
+
+[[CHANNEL]]
+Name            = "BS日テレ"
+ID              = "BS13_0"
+
+[[CHANNEL]]
+Name            = "BSフジ"
+ID              = "BS13_1"
+
+[[CHANNEL]]
+Name            = "NHK BS1"
+ID              = "BS15_0"
+
+[[CHANNEL]]
+Name            = "NHK BSプレミアム"
+ID              = "BS15_1"
+
+[[CHANNEL]]
+Name            = "地デジ難視聴1(NHK/NHK-E/CX)"
+ID              = "BS17_0"
+
+[[CHANNEL]]
+Name            = "地デジ難視聴2(NTV/TBS/EX/TX)"
+ID              = "BS17_1"
+
+[[CHANNEL]]
+Name            = "グリーンチャンネル"
+ID              = "BS19_0"
+
+[[CHANNEL]]
+Name            = "J SPORTS 1"
+ID              = "BS19_1"
+
+[[CHANNEL]]
+Name            = "J SPORTS 2"
+ID              = "BS19_2"
+
+[[CHANNEL]]
+Name            = "IMAGICA BS"
+ID              = "BS21_0"
+
+[[CHANNEL]]
+Name            = "J SPORTS 3"
+ID              = "BS21_1"
+
+[[CHANNEL]]
+Name            = "J SPORTS 4"
+ID              = "BS21_2"
+
+[[CHANNEL]]
+Name            = "BS釣りビジョン"
+ID              = "BS23_0"
+
+[[CHANNEL]]
+Name            = "日本映画専門チャンネル"
+ID              = "BS23_1"
+
+[[CHANNEL]]
+Name            = "D-Life"
+ID              = "BS23_2"
+
+[[CHANNEL]]
+Name            = "CS2"
+ID              = "CS2"
+
+[[CHANNEL]]
+Name            = "CS4"
+ID              = "CS4"
+
+[[CHANNEL]]
+Name            = "CS6"
+ID              = "CS6"
+
+[[CHANNEL]]
+Name            = "CS8"
+ID              = "CS8"
+
+[[CHANNEL]]
+Name            = "CS10"
+ID              = "CS10"
+
+[[CHANNEL]]
+Name            = "CS12"
+ID              = "CS12"
+
+[[CHANNEL]]
+Name            = "CS14"
+ID              = "CS14"
+
+[[CHANNEL]]
+Name            = "CS16"
+ID              = "CS16"
+
+[[CHANNEL]]
+Name            = "CS18"
+ID              = "CS18"
+
+[[CHANNEL]]
+Name            = "CS20"
+ID              = "CS20"
+[[CHANNEL]]
+Name            = "CS22"
+ID              = "CS22"
+[[CHANNEL]]
+Name            = "CS24"
+ID              = "CS24"
+

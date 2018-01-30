@@ -1,0 +1,40 @@
+{
+  "name": "simple-media-server",
+  "version": "0.1.0",
+  "description": "simple media srever",
+  "main": "server/js/index.jsx",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack -p --config ./client/webpack.config.js && go-bindata -o ./server/bindata.go assets/... && gox -osarch=\"linux/amd64\" -output=dist/web_{{.OS}}_{{.Arch}} ./server/...",
+    "bindata": "go-bindata -debug -o ./server/bindata.go assets/...",
+    "dev": "webpack -w --config ./client/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://192.168.11.4:3000/wataru/SimpleMediaServer.git"
+  },
+  "author": "wokada",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.0.31",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^5.0.14",
+    "awesome-typescript-loader": "^3.4.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.1.1",
+    "gulp": "^3.9.1",
+    "semantic-ui-react": "^0.77.1",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0"
+  }
+}
