@@ -9,6 +9,13 @@ Golang+React+Reduxを使ったものはなさそうなので、作ってみま�
 - npm
 - recpt1
 
+# Compile & exec
+
+```
+$ npm run build
+$ ./dist/web_linux_amd64 
+```
+
 
 ## developping
 ### 1st terminal
