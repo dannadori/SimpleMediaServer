@@ -7,6 +7,7 @@ import (
 	"./config"
 	"./controllers"
 	"./data"
+	"./program"
 	"./recorder"
 	"./util"
 	"github.com/elazarl/go-bindata-assetfs"
@@ -54,6 +55,7 @@ func main() {
 
 	data.LoadAll()
 	go recorder.Recorder()
+	go program.RunReceiveTVProgramsService()
 
 	r.GET("/video/:FileName", controllers.GetVideo)
 

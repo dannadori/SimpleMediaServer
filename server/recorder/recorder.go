@@ -35,7 +35,7 @@ func Recorder() {
 			now := time.Now()
 			layout = "2006/01/02_15:04:05"
 			during := (int)(stop.Sub(time.Now()).Seconds())
-			util.Msg("Record Start[1]: " + t.FileName + " afterStart?:" + strconv.FormatBool(now.After(start)) + " beforeEnd?" + strconv.FormatBool(now.Before(stop)) + "")
+			util.Msg("Record Start[1]: " + t.FileName + " afterStart:" + strconv.FormatBool(now.After(start)) + " beforeEnd" + strconv.FormatBool(now.Before(stop)) + "")
 			if now.After(start) && now.Before(stop) && t.FileName == "" {
 				//if now.After(start) && now.Before(stop) && t.FileName == "" {
 				filename := t.Start + "[" + t.Channel + "]_" + t.Title + ".ts"

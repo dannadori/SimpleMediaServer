@@ -100,19 +100,5 @@ func GetTVPrograms(c *gin.Context) {
 // DeleteTVPrograms is ...
 func DeleteTVPrograms(c *gin.Context) {
 	data.DeleteTVProgramUntilYesterday()
-	// prs := data.GetTVPrograms()
-	// mode := c.DefaultQuery("mode", "")
-	// if mode == "yesterday" {
-	// 	t := time.Now()
-	// 	t.Add(-1 * time.Duration(24) * time.Hour)
-	// 	const layout = "20060102150405"
-	// 	yesterday, _ := strconv.Atoi(t.Format(layout))
-	// 	for _, pr := range prs.Programs {
-	// 		stop, _ := strconv.Atoi(pr.Stop)
-	// 		if stop < yesterday {
-	// 			data.DeleteTVProgram(pr.EventID)
-	// 		}
-	// 	}
-	// }
-	// data.SaveTVPrograms()
+
 }

@@ -58,6 +58,7 @@ func worker() <-chan string {
 			err := exec.Command(conf.EXTPROGRAMS.Recpt1, args...).Run()
 			if err != nil {
 				util.Error(err.Error())
+				util.Error(conf.EXTPROGRAMS.Recpt1 + "  " + arg)
 			}
 
 			arg = " A " + videoFile + " " + xmlFile
@@ -65,6 +66,7 @@ func worker() <-chan string {
 			err = exec.Command(conf.EXTPROGRAMS.Epgdump, args...).Run()
 			if err != nil {
 				util.Error(err.Error())
+				util.Error(conf.EXTPROGRAMS.Epgdump + "  " + arg)
 			}
 
 			err = os.Remove(videoFile)
@@ -89,15 +91,14 @@ func ReceiveTVPrograms() (status string, e error) {
 	var inProgress bool
 
 	sm.m.Lock()
+	defer sm.m.Unlock()
 	inProgress = sm.inProgress
 	if inProgress == true {
-		defer sm.m.Unlock()
 		return sm.status, nil
 	}
 
 	sm.status = ""
 	sm.inProgress = true
-	sm.m.Unlock()
 
 	worker()
 
@@ -107,4 +108,17 @@ func ReceiveTVPrograms() (status string, e error) {
 // GetReceiveTVProgramsStatus is ...
 func GetReceiveTVProgramsStatus() (status string, e error) {
 	return sm.status, nil
+}
+
+// RunReceiveTVProgramsService is ...
+func RunReceiveTVProgramsService() {
+	for {
+		time.Sleep(24 * time.Hour)
+		status, err := ReceiveTVPrograms()
+		if err != nil {
+			util.Error("ReceiveTVPrograms Error:" + err.Error())
+		} else {
+			util.Msg("ReceiveTVPrograms ok: " + status)
+		}
+	}
 }
