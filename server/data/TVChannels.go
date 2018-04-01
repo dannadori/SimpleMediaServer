@@ -105,39 +105,3 @@ func SaveTVChannels() {
 func LoadTVChannels() {
 	LoadJSON("TV-channels.json", tvChannels)
 }
-
-// // SaveTVChannels2 is ...
-// func SaveTVChannels2() {
-// 	m.Lock()
-// 	defer m.Unlock()
-// 	filename := getJSONFilePath("TV-channels.json")
-// 	outputJSON, err := json.MarshalIndent(tvChannels, "", "    ")
-// 	util.Msg("Save File: " + filename)
-// 	file, err := os.Create(filename)
-// 	if err != nil {
-// 		util.Error(err.Error())
-// 	}
-// 	file.Write(outputJSON)
-// }
-
-// // LoadTVChannels2 is ...
-// func LoadTVChannels2() {
-
-// 	m.Lock()
-// 	defer m.Unlock()
-// 	filename := getJSONFilePath("TV-channels.json")
-// 	_, err := os.Stat(filename)
-// 	if err != nil {
-// 		return
-// 	}
-// 	raw, err := ioutil.ReadFile(filename)
-// 	if err != nil {
-// 		util.Error(err.Error())
-// 	}
-
-// 	err = json.Unmarshal(raw, tvChannels)
-// 	util.Msg("Load File: " + filename)
-// 	if err != nil {
-// 		util.Error(err.Error())
-// 	}
-// }

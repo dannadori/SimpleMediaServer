@@ -1,11 +1,12 @@
 [COMMON]
-Port            = "1080"
+Port            = "10080"
+PullProgramTime = 2400
 
 [FS]
 Programs        = "programs"
 Videos          = "videos"
 
-[EXT_PROGRAMS]
+[EXTPROGRAMS]
 Recpt1          = "/usr/local/bin/recpt1"
 Epgdump         = "/usr/local/bin/epgdump"
 

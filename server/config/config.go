@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+
 	"path/filepath"
 
 	"github.com/BurntSushi/toml"
@@ -9,15 +10,16 @@ import (
 
 // Config is ...
 type Config struct {
-	COMMON       Common
-	EXT_PROGRAMS ExternalPrograms
-	FS           FolderStructure
-	CHANNEL      []Channel
+	COMMON      Common
+	EXTPROGRAMS ExternalPrograms
+	FS          FolderStructure
+	CHANNEL     []Channel
 }
 
 // Common is ...
 type Common struct {
-	Port string
+	Port            string
+	PullProgramTime int
 }
 
 // ExternalPrograms is ...

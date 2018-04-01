@@ -55,14 +55,14 @@ func worker() <-chan string {
 
 			arg := " --b25 --strip " + c.ID + " 30 " + videoFile
 			args := strings.Fields(arg)
-			err := exec.Command(conf.EXT_PROGRAMS.Recpt1, args...).Run()
+			err := exec.Command(conf.EXTPROGRAMS.Recpt1, args...).Run()
 			if err != nil {
 				util.Error(err.Error())
 			}
 
 			arg = " A " + videoFile + " " + xmlFile
 			args = strings.Fields(arg)
-			err = exec.Command(conf.EXT_PROGRAMS.Epgdump, args...).Run()
+			err = exec.Command(conf.EXTPROGRAMS.Epgdump, args...).Run()
 			if err != nil {
 				util.Error(err.Error())
 			}

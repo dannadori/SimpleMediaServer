@@ -135,7 +135,7 @@ function* handleRequestRecorderTimersGet() {
         //console.log(action)
         try{
             let data = yield call((action)=>{
-                console.log("start get user channels")
+                console.log("start get recorder timers")
                 return fetch(`/api/recorder-timers`)
                 .then(res => res.json())
                 .catch(error => {throw error})
@@ -155,7 +155,7 @@ function* handleRequestRecorderTimersPost() {
         //console.log(action)
         try{
             let data = yield call((action)=>{
-                console.log("start post user channels")
+                console.log("start post recorder timers")
                 return fetch(`/api/recorder-timers`)
                 .then(res => res.json())
                 .catch(error => {throw error})
@@ -174,7 +174,7 @@ function* handleRequestRecorderTimersDelete() {
         //console.log(action)
         try{
             let data = yield call((action)=>{
-                console.log("start delete user channels")
+                console.log("start delete recorder timers")
                 return fetch(`/api/recorder-timers`)
                 .then(res => res.json())
                 .catch(error => {throw error})

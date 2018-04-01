@@ -58,7 +58,9 @@ func Recorder() {
 				util.Msg("Record Start2: " + filePath)
 				util.Msg("Record Start2: " + arg)
 				args := strings.Fields(arg)
-				err = exec.Command(conf.EXT_PROGRAMS.Recpt1, args...).Start()
+				cmd := exec.Command(conf.EXTPROGRAMS.Recpt1, args...)
+				err = cmd.Start()
+				go cmd.Wait()
 				// if err != nil {
 				// 	util.Error(err.Error())
 				// }
