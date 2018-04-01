@@ -31,10 +31,10 @@ func DeleteRecorderTimers(c *gin.Context) {
 
 	mode := c.DefaultQuery("mode", "")
 
-	EventID := c.Param("EventID")
+	key := c.Param("key")
 
 	if mode == "deleteFile" {
-		program := data.GetRecorderTimer(EventID)
+		program := data.GetRecorderTimer(key)
 		if program == nil {
 			util.Error("programs is nil")
 		} else {
@@ -45,6 +45,6 @@ func DeleteRecorderTimers(c *gin.Context) {
 		}
 	}
 
-	data.DeleteRecorderTimer(EventID)
+	data.DeleteRecorderTimer(key)
 	data.SaveRecorderTimers()
 }

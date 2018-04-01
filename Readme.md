@@ -32,19 +32,22 @@ npm run bindata # invoke by each change
 ## TODO NEXT VERSIOM
 - Channel Group
 
-# 内部仕様
+# 内部仕様 (サーバ)
 ## 起動時の処理
 1. config.tomlの読み込み [*](#config)
 1. staticファイルの設定。(client部分bindata)
-1. データのロード
-1. APIコントローラの設定
-1. サービス軌道
+1. データのロード [*](#load_data)
+1. レコーダサービスの起動 [*](#invoke_recorder_service)
+1. プログラム取得サービスの起動 (not yet) [*](#invoke_pull_program_service)
+1. APIコントローラの設定 [*](#controller)
+1. 本サービス起動 [*](#service)
 
 ### 環境変数 SMS_HOME
 Video等データをおく場所。環境変数が設定されていない場合は実行時のカレントフォルダが使われる。
 
-## config.tomlの仕様 
 <a name="config"></a>
+
+## config.tomlの仕様 
 
 | #   | item             | json            | ex)                                                          |     |     |
 | --- | ---------------- | --------------- | ------------------------------------------------------------ | --- | --- |
@@ -57,25 +60,137 @@ Video等データをおく場所。環境変数が設定されていない場合
 | 1   | Channel          | Name            | チャンネル名                                                      |     |     |
 | 1   |                  | ID              | チャンネルID                                                      |     |     |
 
+<a name="load_data"></a>
 
-## API
+## データのロード
+| #   | ファイル                 | 説明             | 詳細 |     |     |     |
+| --- | -------------------- | ---------------- | ---- | --- | --- | --- |
+| 1   | TV-channels.json     | チャンネル情報        |      |     |     |     |
+| 1   | TV-programs.json     | 番組情報         |      |     |     |     |
+| 1   | recorder-timers.json | 録画データ情報      |      |     |     |     |
+| 1   | tags.json            | チャンネルにつけるタグの情報 |      |     |     |     |
+
+### チャンネル情報 (TV-channels.json)
+```
+{  
+   "Channels":[  
+      {  
+         "ID":"GR_23656",
+         "Tp":"13",
+         "DisplayName":"Ｊ：ＣＯＭテレビ",
+         "TransportStreamID":"32397",
+         "OriginalNetworkID":"32397",
+         "ServiceID":"23656",
+         "key":"GR_23656",
+         "tags":[  
+            "ｇ"
+         ],
+         "visible":false
+      },
+      {  
+         "ID":"GR_23657",
+         "Tp":"13",
+         "DisplayName":"Ｊ：ＣＯＭテレビ",
+         "TransportStreamID":"32397",
+         "OriginalNetworkID":"32397",
+         "ServiceID":"23657",
+         "key":"GR_23657",
+         "tags":null,
+         "visible":false
+      }
+   ]
+}
+```
+
+### 番組情報 (TV-programs.json)、録画データ情報 (recorder-timers.json)
+```
+{
+    "Programs": [
+        {
+            "Channel": "GR_23656",
+            "Title": "ダイレクトテレショップ",
+            "Desc": "　",
+            "Category": [
+                "情報／ワイドショー",
+                "information"
+            ],
+            "Start": "20180401020000",
+            "Stop": "20180401030000",
+            "EventID": "183",
+            "FileName": "",
+            "key": "183_GR_23656"
+        },
+        {
+            "Channel": "GR_23656",
+            "Title": "笑福亭鶴光のオールナイトニッポン．ＴＶ＠Ｊ：ＣＯＭ　＃２８",
+            "Desc": "２０１７年１０月に５０周年を迎えたニッポン放送の「オールナイトニッポン」とコラボレーション！メインパーソナリティーに笑福亭鶴光を迎え、３１年ぶりに復活！！",
+            "Category": [
+                "バラエティ",
+                "variety"
+            ],
+            "Start": "20180401030000",
+            "Stop": "20180401050000",
+            "EventID": "184",
+            "FileName": "",
+            "key": "184_GR_23656"
+        }
+    ]
+}
+```
+
+### チャンネルにつけるタグの情報 (tags.json)
+```
+{
+    "Tags": [
+        {
+            "TagName": "ｇ",
+            "Category": "Tags For Channels"
+        }
+    ]
+}
+```
+
+
+<a name="invoke_recorder_service"></a>
+
+## レコーダサービスの起動
+
+1. 15秒に一度録画情報を参照
+1. 各録画情報について・・・
+    1. 現在時間が、開始時刻と終了時刻に入るかを確認
+        1. メッセージ出力 "<タイトル> <現在が開始時刻後か> <現在が終了時刻前>"
+    1. 現在時間が、開始時刻と終了時刻に入り、ファイル名が入ってなければ(＝録画開始していなければ)
+        1. ファイル名を作成　
+        2. 録画情報にファイル名を設定→ ファイルに保存
+        3. メッセージ出力 "Record Start: <ファイル名>"
+        4. 録画コマンド実行
+        5. goroutineで終了待ち
+
+
+<a name="invoke_pull_program_service"></a>
+
+## プログラム取得サービスの起動 (not yet)
+
+<a name="controller"></a>
+
+## API APIコントローラの設定
 | #   | method | path                          | controller                       | file               |     |     |
 | --- | ------ | ----------------------------- | -------------------------------- | ------------------ | --- | --- |
 | 1   | GET    | /video/:FileName              | controllers.GetVideo             | videos.go          |     |     |
 | 1   | GET    | /api/tv-channels              | controllers.GetTVChannels        | TVChannels.go      |     |     |
 | 1   | PATCH  | /api/tv-channels/:ID          | controllers.PatchTVChannels      |                    |     |     |
 | 1   | GET    | /api/tv-programs/update       | controllers.GetUpdateTVPrograms  | TVPrograms.go      |     |     |
-| 1   | GET    | /api/tv-programs              | controllers.GetTVPrograms        |                    |     |     |
 | 1   | POST   | /api/tv-programs/update       | controllers.PostUpdateTVPrograms |                    |     |     |
+| 1   | GET    | /api/tv-programs              | controllers.GetTVPrograms        |                    |     |     |
 | 1   | DELETE | /api/tv-programs              | controllers.DeleteTVPrograms     |                    |     |     |
 | 1   | GET    | /api/recorder-timers          | controllers.GetRecorderTimers    | recorederTimers.go |     |     |
 | 1   | POST   | "/api/recorder-timers         | controllers.PostRecorderTimers   |                    |     |     |
-| 1   | DELETE | /api/recorder-timers/:EventID | controllers.DeleteRecorderTimers |                    |     |     |
+| 1   | DELETE | /api/recorder-timers/:key     | controllers.DeleteRecorderTimers |                    |     |     |
 | 1   | GET    | /api/tags                     | controllers.GetTags              | tagos.go           |     |     |
 | 1   | POST   | /api/tags                     | controllers.PostTags             |                    |     |     |
 | 1   | DELETE | "/api/tags/:Category/:TagName | controllers.DeleteTags           |                    |     |     |
 
-### Get Video File 
+### ビデオファイル取得 
 
 | #   | method | path             | controller           | file      |     |     |
 | --- | ------ | ---------------- | -------------------- | --------- | --- | --- |
@@ -90,40 +205,266 @@ FileNameで指定したファイルを取得。
 http.ServeFileでginのデフォルトの動作ファイルを返す。(c.Header("Content-Type", "video/mpeg")はする。)
 
 
-### Get Video File (GET /api/tv-channels)
+### チャンネル情報取得
 
 | #   | method | path             | controller                | file          |     |     |
 | --- | ------ | ---------------- | ------------------------- | ------------- | --- | --- |
 | 1   | GET    | /api/tv-channels | controllers.GetTVChannels | TVChannels.go |     |     |
 
 チャンネル一覧を返す。
-[例](json_example/get_tv-channels.json)
+```
+{  
+    "Channels":[  
+       {  
+          "ID":"GR_23656",
+          "Tp":"13",
+          "DisplayName":"Ｊ：ＣＯＭテレビ",
+          "TransportStreamID":"32397",
+          "OriginalNetworkID":"32397",
+          "ServiceID":"23656",
+          "key":"GR_23656",
+          "tags":[  
+             "ｇ"
+          ],
+          "visible":false
+       },
+       {  
+          "ID":"GR_23657",
+          "Tp":"13",
+          "DisplayName":"Ｊ：ＣＯＭテレビ",
+          "TransportStreamID":"32397",
+          "OriginalNetworkID":"32397",
+          "ServiceID":"23657",
+          "key":"GR_23657",
+          "tags":null,
+          "visible":false
+       }
+    ]
+ }
+```
 
 
-### Get Video File (GET /api/tv-channels/:ID)
+### チャンネル情報設定
+
+| #   | method | path                 | controller                  | file |     |     |
+| --- | ------ | -------------------- | --------------------------- | ---- | --- | --- |
+| 1   | PATCH  | /api/tv-channels/:ID | controllers.PatchTVChannels |      |     |     |
+
+チャンネル情報を設定する。
+設定する情報はタグと表示可否。
+IDで指定されらたチャンネルを検索し、情報を上書きする。
+
+```
+{  
+   "Channels":[  
+      {  
+         "ID":"GR_23657",
+         "Tp":"13",
+         "DisplayName":"Ｊ：ＣＯＭテレビ",
+         "TransportStreamID":"32397",
+         "OriginalNetworkID":"32397",
+         "ServiceID":"23657",
+         "key":"GR_23657",
+         "tags":[   // タグ情報
+            "ｇ" 
+         ],
+         "visible":false // 表示情報 
+      }
+   ]
+}
+```
+
+### 番組表更新状況確認
+
+| #   | method | path                    | controller                      | file          |     |     |
+| --- | ------ | ----------------------- | ------------------------------- | ------------- | --- | --- |
+| 1   | GET    | /api/tv-programs/update | controllers.GetUpdateTVPrograms | TVPrograms.go |     |     |
 
 
-| #   | method | path                          | controller                       | file               |     |     |
-| --- | ------ | ----------------------------- | -------------------------------- | ------------------ | --- | --- |
-| 1   | GET    | /video/:FileName              | controllers.GetVideo             | videos.go          |     |     |
-| 1   | GET    | /api/tv-channels              | controllers.GetTVChannels        | TVChannels.go      |     |     |
-| 1   | PATCH  | /api/tv-channels/:ID          | controllers.PatchTVChannels      |                    |     |     |
-| 1   | GET    | /api/tv-programs/update       | controllers.GetUpdateTVPrograms  | TVPrograms.go      |     |     |
-| 1   | GET    | /api/tv-programs              | controllers.GetTVPrograms        |                    |     |     |
-| 1   | POST   | /api/tv-programs/update       | controllers.PostUpdateTVPrograms |                    |     |     |
-| 1   | DELETE | /api/tv-programs              | controllers.DeleteTVPrograms     |                    |     |     |
-| 1   | GET    | /api/recorder-timers          | controllers.GetRecorderTimers    | recorederTimers.go |     |     |
-| 1   | POST   | "/api/recorder-timers         | controllers.PostRecorderTimers   |                    |     |     |
-| 1   | DELETE | /api/recorder-timers/:EventID | controllers.DeleteRecorderTimers |                    |     |     |
-| 1   | GET    | /api/tags                     | controllers.GetTags              | tagos.go           |     |     |
-| 1   | POST   | /api/tags                     | controllers.PostTags             |                    |     |     |
-| 1   | DELETE | "/api/tags/:Category/:TagName | controllers.DeleteTags           |                    |     |     |
+### 番組表更新
+
+| #   | method | path                    | controller                       | file |     |     |
+| --- | ------ | ----------------------- | -------------------------------- | ---- | --- | --- |
+| 1   | POST   | /api/tv-programs/update | controllers.PostUpdateTVPrograms |      |     |     |
 
 
-## Data Structure
-### Server Module
+### 番組表取得
 
-#### TV Cahhnel (TVChannels.go)
+| #   | method | path             | controller                | file |     |     |
+| --- | ------ | ---------------- | ------------------------- | ---- | --- | --- |
+| 1   | GET    | /api/tv-programs | controllers.GetTVPrograms |      |     |     |
+
+番組表を取得する。
+クエリは、channel、begin、end、wordが指定可能
+
+```
+{
+    "Programs": [
+        {
+            "Channel": "GR_23656",
+            "Title": "ダイレクトテレショップ",
+            "Desc": "　",
+            "Category": [
+                "情報／ワイドショー",
+                "information"
+            ],
+            "Start": "20180401020000",
+            "Stop": "20180401030000",
+            "EventID": "183",
+            "FileName": "",
+            "key": "183_GR_23656"
+        },
+        {
+            "Channel": "GR_23656",
+            "Title": "笑福亭鶴光のオールナイトニッポン．ＴＶ＠Ｊ：ＣＯＭ　＃２８",
+            "Desc": "２０１７年１０月に５０周年を迎えたニッポン放送の「オールナイトニッポン」とコラボレーション！メインパーソナリティーに笑福亭鶴光を迎え、３１年ぶりに復活！！",
+            "Category": [
+                "バラエティ",
+                "variety"
+            ],
+            "Start": "20180401030000",
+            "Stop": "20180401050000",
+            "EventID": "184",
+            "FileName": "",
+            "key": "184_GR_23656"
+        },
+    ]
+}
+```
+
+### 番組表削除
+
+| #   | method | path             | controller                   | file |     |     |
+| --- | ------ | ---------------- | ---------------------------- | ---- | --- | --- |
+| 1   | DELETE | /api/tv-programs | controllers.DeleteTVPrograms |      |     |     |
+
+古い番組のデータを番組表から削除する。
+現時点の実相では、実行時の1日前より古い番組情報は削除される。
+
+
+
+### 録画情報取得
+
+| #   | method | path                 | controller                    | file               |     |     |
+| --- | ------ | -------------------- | ----------------------------- | ------------------ | --- | --- |
+| 1   | GET    | /api/recorder-timers | controllers.GetRecorderTimers | recorederTimers.go |     |     |
+
+録画情報を取得する。
+
+```
+{
+    "Programs": [
+        {
+            "Channel": "A_103",
+            "Title": "岩合光昭の世界ネコ歩きｍｉｎｉ「イヌとネコ」「ネコの歩き方」【字】",
+            "Desc": "動物写真家・岩合光昭が世界各地で撮影するネコ、今回の冒頭は「イヌとネコ」、「猫識」は「ネコの歩き方」、名場面は珍種「スフィンクス」とチェコの古都のホテルのネコ。",
+            "Category": [
+                "その他",
+                "etc"
+            ],
+            "Start": "20180326231000",
+            "Stop": "20180326232500",
+            "EventID": "13369",
+            "FileName": "20180326231000[A_103]_岩合光昭の世界ネコ歩きｍｉｎｉ「イヌとネコ」「ネコの歩き方」【字】.ts",
+            "key": "13369_A_103"
+        }
+    ]
+}
+```
+
+### 録画情報設定
+
+| #   | method | path                  | controller                     | file |     |     |
+| --- | ------ | --------------------- | ------------------------------ | ---- | --- | --- |
+| 1   | POST   | "/api/recorder-timers | controllers.PostRecorderTimers |      |     |     |
+
+録画情報を設定する。
+
+```
+{  
+   "Programs":[  
+      {  
+         "Channel":"GR_24632",
+         "Title":"クルマでいこう！「ホンダ　シビック　ＴＹＰＥ　Ｒ」",
+         "Desc":"ホンダ　シビック　ＴＹＰＥ　Ｒの実力を岡崎五朗・藤島知子が試乗やメーカー・インポーターとのインタビューを通して、分かりやすく立体的にチェックします。",
+         "Category":[  
+            "その他",
+            "etc"
+         ],
+         "Start":"20180401220000",
+         "Stop":"20180401223000",
+         "EventID":"30859",
+         "FileName":"",
+         "key":"30859_GR_24632"
+      }
+   ]
+}
+```
+
+### 録画情報削除
+
+| #   | method | path                      | controller                       | file |     |     |
+| --- | ------ | ------------------------- | -------------------------------- | ---- | --- | --- |
+| 1   | DELETE | /api/recorder-timers/:key | controllers.DeleteRecorderTimers |      |     |     |
+
+録画情報を削除する。
+keyで指定された録画情報を削除する。
+パラメータ"mode"でdeleteFileを指定するとファイルも消す。
+
+### タグ取得
+
+| #   | method | path      | controller          | file     |     |     |
+| --- | ------ | --------- | ------------------- | -------- | --- | --- |
+| 1   | GET    | /api/tags | controllers.GetTags | tagos.go |     |     |
+
+タグ情報を取得する。
+```
+{
+    "Tags": [
+        {
+            "TagName": "ｇ",
+            "Category": "Tags For Channels"
+        }
+    ]
+}
+```
+
+### タグ作成
+
+| #   | method | path      | controller           | file |     |     |
+| --- | ------ | --------- | -------------------- | ---- | --- | --- |
+| 1   | POST   | /api/tags | controllers.PostTags |      |     |     |
+
+タグを作成する
+```
+{  
+   "Tags":[  
+      {  
+         "TagName":"test",
+         "Category":"Tags For Channels"
+      }
+   ]
+}
+```
+
+### タグ削除
+
+| #   | method | path                          | controller             | file |     |     |
+| --- | ------ | ----------------------------- | ---------------------- | ---- | --- | --- |
+| 1   | DELETE | "/api/tags/:Category/:TagName | controllers.DeleteTags |      |     |     |
+
+Category, TagNameが一致するタグを削除する。
+
+<a name="service"></a>
+
+## 本サービス起動
+
+
+
+# Data Structure
+## Server Module
+
+### TV Cahhnel (TVChannels.go)
 | #   | item              | json                     | ex)   |                       |     |
 | --- | ----------------- | ------------------------ | ----- | --------------------- | --- |
 | 1   | ID                | json:"ID"                | A_103 | primary key           |     |
@@ -137,7 +478,7 @@ http.ServeFileでginのデフォルトの動作ファイルを返す。(c.Header
 | 1   | Visible           | json:"visible"           |       |                       |     |
 
 
-#### TV Program (TVPrograms.go, recorederTimers.go)
+### TV Program (TVPrograms.go, recorederTimers.go)
 | #   | item     | json            | ex)   |     |     |
 | --- | -------- | --------------- | ----- | --- | --- |
 | 1   | Channel  | json:"Channel"  | A_103 |     |     |
@@ -150,7 +491,7 @@ http.ServeFileでginのデフォルトの動作ファイルを返す。(c.Header
 | 1   | FileName | json:"FileName" |       |     |     |
 | 1   | Key      | json:"key"      |       |     |     |
 
-#### Tags (tags.go)
+### Tags (tags.go)
 | #   | item     | json            | ex) |     |     |
 | --- | -------- | --------------- | --- | --- | --- |
 | 1   | TagName  | json:"TagName"  |     |     |     |

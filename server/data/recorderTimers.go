@@ -33,12 +33,12 @@ func AddRecorderTimer(program *Program) {
 }
 
 // DeleteRecorderTimer is ...
-func DeleteRecorderTimer(EventID string) {
+func DeleteRecorderTimer(key string) {
 	m.Lock()
 	defer m.Unlock()
 	res := []*Program{}
 	for _, p := range recorderTimers.Programs {
-		if p.EventID == EventID {
+		if p.Key == key {
 		} else {
 			res = append(res, p)
 		}
@@ -81,40 +81,3 @@ func SaveRecorderTimers() {
 func LoadRecorderTimers() {
 	LoadJSON("recorder-timers.json", recorderTimers)
 }
-
-// // SaveRecorderTimers2 is ...
-// func SaveRecorderTimers2() {
-// 	m.Lock()
-// 	defer m.Unlock()
-
-// 	filename := getJSONFilePath("recorder-timers.json")
-// 	outputJSON, err := json.MarshalIndent(recorderTimers, "", "    ")
-// 	util.Msg("Save File: " + filename)
-
-// 	file, err := os.Create(filename)
-// 	if err != nil {
-// 		util.Error(err.Error())
-// 	}
-// 	file.Write(outputJSON)
-// }
-
-// // LoadRecorderTimers2 is ...
-// func LoadRecorderTimers2() {
-// 	m.Lock()
-// 	defer m.Unlock()
-// 	filename := getJSONFilePath("recorder-timers.json")
-// 	_, err := os.Stat(filename)
-// 	if err != nil {
-// 		return
-// 	}
-// 	raw, err := ioutil.ReadFile(filename)
-// 	if err != nil {
-// 		util.Error(err.Error())
-// 	}
-
-// 	err = json.Unmarshal(raw, recorderTimers)
-// 	util.Msg("Load File: " + filename)
-// 	if err != nil {
-// 		util.Error(err.Error())
-// 	}
-// }

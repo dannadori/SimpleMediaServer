@@ -67,7 +67,7 @@ func main() {
 
 	r.POST("/api/recorder-timers", controllers.PostRecorderTimers)
 	r.GET("/api/recorder-timers", controllers.GetRecorderTimers)
-	r.DELETE("/api/recorder-timers/:EventID", controllers.DeleteRecorderTimers)
+	r.DELETE("/api/recorder-timers/:key", controllers.DeleteRecorderTimers)
 
 	r.POST("/api/tags", controllers.PostTags)
 	r.GET("/api/tags", controllers.GetTags)

@@ -35,7 +35,7 @@ func Recorder() {
 			now := time.Now()
 			layout = "2006/01/02_15:04:05"
 			during := (int)(stop.Sub(time.Now()).Seconds())
-			util.Msg("Record Start[1]: " + t.FileName + " " + strconv.FormatBool(now.After(start)) + " " + strconv.FormatBool(now.Before(stop)) + "")
+			util.Msg("Record Start[1]: " + t.FileName + " afterStart?:" + strconv.FormatBool(now.After(start)) + " beforeEnd?" + strconv.FormatBool(now.Before(stop)) + "")
 			if now.After(start) && now.Before(stop) && t.FileName == "" {
 				//if now.After(start) && now.Before(stop) && t.FileName == "" {
 				filename := t.Start + "[" + t.Channel + "]_" + t.Title + ".ts"
@@ -44,7 +44,7 @@ func Recorder() {
 				filename = strings.Replace(filename, "/", "_", -1)
 
 				filePath := getVideoFilePath(filename)
-				t.FileName = filename
+				t.FileName = filename //ファイル名設定
 				data.SaveRecorderTimers()
 				util.Msg("Record Start: " + filePath)
 
@@ -55,8 +55,7 @@ func Recorder() {
 				}
 				tp := data.GetTVChannel(t.Channel)
 				arg := " --b25 --strip " + tp + " " + strconv.Itoa(during) + " " + filePath
-				util.Msg("Record Start2: " + filePath)
-				util.Msg("Record Start2: " + arg)
+				util.Msg("Record Start2: param:" + arg)
 				args := strings.Fields(arg)
 				cmd := exec.Command(conf.EXTPROGRAMS.Recpt1, args...)
 				err = cmd.Start()
